@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" href="./images/nightwave-logo.svg">
+    <title>NightWave - Premium Music Experience</title>
+    <link rel="stylesheet" href="./styles.css">
+    <link rel="stylesheet" href="./home.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="main">
+        <div class="sidebar">
+            <div class="nav">
+                <div class="nav-option" style="opacity: 1;">
+                    <i class="fa-solid fa-house"></i>
+                    <a href="#">Home</a>
+                </div>
+                <div class="nav-option">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <a href="#">Search</a>
+                </div>
+                <div class="nav-option">
+                    <i class="fa-solid fa-list"></i>
+                    <a href="playlist.html">Playlists</a>
+                </div>
+                <div class="nav-option">
+                    <i class="fa-solid fa-book"></i>
+                    <a href="library.html">My Library</a>
+                </div>
+            </div>
+            <div class="library">
+                <div class="options">
+                    <div class="lib-option nav-option">
+                        <img src="./images/nightwave-logo.svg" style="height: 2rem; width: 2rem;">
+                        <a href="#" style="font-size: 1.2rem; font-weight: 700; margin-left: 0.5rem;">NightWave</a>
+                    </div>
+                    <div class="icons">
+                        <i class="fa-solid fa-plus"></i>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
+                </div>
+                <div class="lib-box">
+                    <div class="box">
+                        <p class="box-p1">Discover Your Sound</p>
+                        <p class="box-p2">Create custom playlists for every mood</p>
+                        <button class="badge">Create playlist</button>
+                    </div>
+                    <div class="box">
+                        <p class="box-p1">Explore Audio Stories</p>
+                        <p class="box-p2">Stay updated with the latest podcasts</p>
+                        <button class="badge">Browse podcasts</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="sticky-nav">
+                <div class="nav-icons">
+                    <img src="./images/backward_icon.png">
+                    <img src="./images/forward_icon.png" class="hide">    
+                </div>
+                <div class="sticky-nav-options">
+                    <button class="badge nav-item hide">Go Premium</button>
+                    <button class="badge nav-item dark-badge"><i class="fa-regular fa-circle-down" style="margin-right: 5px;"></i>Get App</button>
+                    <a href="login.html" class="nav-item" style="margin-right: 0.5rem; color: #4a7bff; font-weight: 600; text-decoration: none;">Login</a>
+                    <a href="register.html" class="badge nav-item" style="background: linear-gradient(135deg, #4a7bff, #5a8bff);">Sign Up</a>
+                </div>
+           </div>
+            <h2>Recently Played</h2>
+            <div class="cards-container">
+                <div class="card">
+                    <img src="images/card1img.jpeg" class="card-img">
+                    <p class="card-title">Top 50 - Global</p>
+                    <p class="card-info">Your daily updates of the most played ...</p>
+                    <a href="https://www.youtube.com/watch?v=ko70cExuzZM&list=PLOHoVaTp8R7dqEEhhaOG7yfDoj_y2BrZ4&pp=0gcJCbEEOCosWNin" target="_blank" class="youtube-link">
+                        <i class="fa-brands fa-youtube"></i> Watch on YouTube
+                    </a>
+                </div>
+            </div>
+
+            <h2>Trending now near you</h2>
+            <div class="cards-container">
+                <div class="card">
+                    <img src="images/card2img.jpeg" class="card-img">
+                    <p class="card-title">Blinding Lights</p>
+                    <p class="card-info">The Weeknd - Official Music Video</p>
+                    <a href="https://www.youtube.com/watch?v=4NRXx6U8ABQ" target="_blank" class="youtube-link">
+                        <i class="fa-brands fa-youtube"></i> Watch on YouTube
+                    </a>
+                </div>
+                <div class="card">
+                    <img src="images/card3img.jpeg" class="card-img">
+                    <p class="card-title">Levitating</p>
+                    <p class="card-info">Dua Lipa - Dance Anthem</p>
+                    <a href="https://www.youtube.com/watch?v=TUVcZfQe-Kw" target="_blank" class="youtube-link">
+                        <i class="fa-brands fa-youtube"></i> Watch on YouTube
+                    </a>
+                </div>
+                <div class="card">
+                    <img src="images/card4img.jpeg" class="card-img">
+                    <p class="card-title">Shape of You</p>
+                    <p class="card-info">Ed Sheeran - Official Music Video</p>
+                    <a href="https://www.youtube.com/watch?v=JGwWNGJdvx8" target="_blank" class="youtube-link">
+                        <i class="fa-brands fa-youtube"></i> Watch on YouTube
+                    </a>
+                </div>
+                <div class="card">
+                    <img src="images/card4img.jpeg" class="card-img">
+                    <p class="card-title">Starboy</p>
+                    <p class="card-info">The Weeknd ft. Daft Punk</p>
+                    <a href="https://www.youtube.com/watch?v=34Na4j8AVgA" target="_blank" class="youtube-link">
+                        <i class="fa-brands fa-youtube"></i> Watch on YouTube
+                    </a>
+                </div>
+                <div class="card">
+                    <img src="images/card2img.jpeg" class="card-img">
+                    <p class="card-title">As It Was</p>
+                    <p class="card-info">Harry Styles - Official Video</p>
+                    <a href="https://www.youtube.com/watch?v=H5v3kku4y6Q" target="_blank" class="youtube-link">
+                        <i class="fa-brands fa-youtube"></i> Watch on YouTube
+                    </a>
+                </div>
+            </div>
+
+            <h2>Featured Charts</h2>
+            <div class="cards-container">
+                <div class="card">
+                    <img src="images/card5img.jpeg" class="card-img">
+                    <p class="card-title">Bad Habits</p>
+                    <p class="card-info">Ed Sheeran - Pop Hit</p>
+                    <a href="https://www.youtube.com/watch?v=orJSJGHjBLI" target="_blank" class="youtube-link">
+                        <i class="fa-brands fa-youtube"></i> Watch on YouTube
+                    </a>
+                </div>
+                <div class="card">
+                    <img src="images/card6img.jpeg" class="card-img">
+                    <p class="card-title">Heat Waves</p>
+                    <p class="card-info">Glass Animals - Indie Vibes</p>
+                    <a href="https://www.youtube.com/watch?v=mRD0-GxqHVo" target="_blank" class="youtube-link">
+                        <i class="fa-brands fa-youtube"></i> Watch on YouTube
+                    </a>
+                </div>
+                <div class="card">
+                    <img src="images/card1img.jpeg" class="card-img">
+                    <p class="card-title">Stay</p>
+                    <p class="card-info">The Kid LAROI & Justin Bieber</p>
+                    <a href="https://www.youtube.com/watch?v=kTJczUoc26U" target="_blank" class="youtube-link">
+                        <i class="fa-brands fa-youtube"></i> Watch on YouTube
+                    </a>
+                </div>
+            </div>
+            <div class="footer">
+                <div class="line"></div>
+            </div>
+        </div>
+        <div class="music-player">
+            <div class="album"></div>
+            <div class="player">
+                <div class="player-controls">
+                    <img src="./images/player_icon1.png" class="player-control-icon">
+                    <img src="./images/player_icon2.png" class="player-control-icon">
+                    <img src="./images/player_icon3.png" class="player-control-icon" style="opacity: 1;height: 2rem;">
+                    <img src="./images/player_icon4.png" class="player-control-icon">
+                    <img src="./images/player_icon5.png" class="player-control-icon">
+                </div>
+                <div class="playback-bar">
+                    <span class="curr-time">00:00</span>
+                    <input type="range" min="0" max="100" class="progress-bar" step="1">
+                    <span class="tot-time">03:50</span>
+                </div>
+            </div>
+            <div class="controls"></div>
+        </div>
+    </div>
+</body>
+</html>

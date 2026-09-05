@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-
-const API = "http://localhost:5000/api";
+import { API } from "../config/api";
 
 export function usePlaylists() {
   const [playlists, setPlaylists] = useState([]);

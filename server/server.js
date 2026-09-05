@@ -33,14 +33,44 @@ const authLimiter = rateLimit({
   },
 });
 
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log("MongoDB connected");
-  })
-  .catch((error) => {
-    console.error("MongoDB connection failed:", error.message);
-  });
+async function connectDB() {
+  const uri = process.env.MONGO_URI;
+
+  // 1. If MongoDB Atlas / external URI provided (not localhost)
+  if (uri && !uri.includes("localhost") && !uri.includes("127.0.0.1")) {
+    try {
+      await mongoose.connect(uri);
+      console.log("Connected to MongoDB Atlas");
+      return;
+    } catch (err) {
+      console.error("MongoDB Atlas connection failed:", err.message);
+    }
+  }
+
+  // 2. Try local MongoDB service with a short timeout
+  if (uri) {
+    try {
+      await mongoose.connect(uri, { serverSelectionTimeoutMS: 2500 });
+      console.log("Connected to local MongoDB");
+      return;
+    } catch {
+      console.log("Local MongoDB not found. Starting in-memory MongoDB for local development...");
+    }
+  }
+
+  // 3. Fallback to in-memory MongoDB so signup & app work seamlessly out-of-the-box
+  try {
+    const { MongoMemoryServer } = require("mongodb-memory-server");
+    const mongod = await MongoMemoryServer.create();
+    const memoryUri = mongod.getUri();
+    await mongoose.connect(memoryUri);
+    console.log("MongoDB in-memory server connected ready for development");
+  } catch (err) {
+    console.error("Failed to start in-memory MongoDB:", err.message);
+  }
+}
+
+connectDB();
 
 app.use("/api/auth", authLimiter, require("./routes/auth"));
 app.use("/api/songs", require("./routes/songs"));

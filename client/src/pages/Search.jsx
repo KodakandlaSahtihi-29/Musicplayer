@@ -3,13 +3,13 @@ import { useState } from "react";
 import { useSearch } from "../hooks/useSearch";
 import { useAuth } from "../context/AuthContext";
 import { usePlayer } from "../context/PlayerContext";
+import { API } from "../config/api";
 
 export default function Search() {
   const { query, results, loading, search } = useSearch();
   const { user } = useAuth();
   const { playSong, currentSong, clearSong } = usePlayer();
   const [tab, setTab] = useState("all");
-  const API = "http://localhost:5000/api";
 
   const handleRemove = async (songId) => {
     try {

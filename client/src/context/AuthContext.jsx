@@ -1,8 +1,9 @@
 import React from "react";
 import { createContext, useContext, useEffect, useState } from "react";
 
+import { API } from "../config/api";
+
 const AuthCtx = createContext();
-const API = "http://localhost:5000/api";
 
 async function parseApiResponse(res) {
   const raw = await res.text();

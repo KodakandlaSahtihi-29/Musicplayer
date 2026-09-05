@@ -1,6 +1,5 @@
 import { useState } from "react";
-
-const API = "http://localhost:5000/api";
+import { API } from "../config/api";
 
 export function useUpload() {
   const [progress, setProgress] = useState(0);

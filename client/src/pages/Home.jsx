@@ -3,8 +3,7 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { usePlayer } from "../context/PlayerContext";
 import SongCard from "../components/SongCard/SongCard";
-
-const API = "http://localhost:5000/api";
+import { API } from "../config/api";
 
 function Home() {
   const { user } = useAuth();

@@ -2,8 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { usePlaylists } from "../hooks/usePlaylists";
-
-const API = "http://localhost:5000/api";
+import { API } from "../config/api";
 
 export default function Playlist() {
   const { id } = useParams();

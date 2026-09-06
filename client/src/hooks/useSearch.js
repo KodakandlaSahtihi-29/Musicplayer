@@ -24,12 +24,14 @@ export function useSearch() {
         const data = await res.json();
         setResults(data);
       } catch (err) {
-        // Fallback filter over demo tracks for offline / GitHub Pages demo mode
+        // Fallback filter over demo tracks + local songs for offline / GitHub Pages demo mode
         const lq = q.toLowerCase();
-        const matchedSongs = DEMO_SONGS.filter(
+        const localSongs = JSON.parse(localStorage.getItem("local_songs") || "[]");
+        const allSongs = [...localSongs, ...DEMO_SONGS];
+        const matchedSongs = allSongs.filter(
           (s) =>
-            s.title.toLowerCase().includes(lq) ||
-            s.artist.toLowerCase().includes(lq) ||
+            s.title?.toLowerCase().includes(lq) ||
+            s.artist?.toLowerCase().includes(lq) ||
             (s.album && s.album.toLowerCase().includes(lq))
         );
         setResults({ songs: matchedSongs, albums: [], artists: [] });

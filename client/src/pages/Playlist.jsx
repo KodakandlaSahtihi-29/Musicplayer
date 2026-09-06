@@ -13,8 +13,13 @@ export default function Playlist() {
   const fetchPlaylist = async () => {
     try {
       const res = await fetch(`${API}/playlists/${id}`);
+      if (!res.ok) throw new Error("Unavailable");
       const data = await res.json();
       setPlaylist(data);
+    } catch {
+      const local = JSON.parse(localStorage.getItem("local_playlists") || "[]");
+      const found = local.find((p) => p._id === id);
+      setPlaylist(found || null);
     } finally {
       setLoading(false);
     }

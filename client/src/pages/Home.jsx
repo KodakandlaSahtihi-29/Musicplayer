@@ -14,19 +14,26 @@ function Home() {
 
   useEffect(() => {
     const loadSongs = async () => {
+      let serverSongs = [];
       try {
         const res = await fetch(`${API}/songs`);
-        const data = await res.json();
-        if (Array.isArray(data) && data.length > 0) {
-          setSongs(data);
-        } else {
-          setSongs(DEMO_SONGS);
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data) && data.length > 0) {
+            serverSongs = data;
+          }
         }
       } catch {
-        setSongs(DEMO_SONGS);
-      } finally {
-        setLoading(false);
+        // static host or offline mode
       }
+
+      const localSongs = JSON.parse(localStorage.getItem("local_songs") || "[]");
+      if (serverSongs.length > 0) {
+        setSongs([...localSongs, ...serverSongs]);
+      } else {
+        setSongs([...localSongs, ...DEMO_SONGS]);
+      }
+      setLoading(false);
     };
 
     loadSongs();
@@ -39,12 +46,16 @@ function Home() {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
-      setSongs((prev) => prev.filter((song) => song._id !== songId));
-      if (currentSong?._id === songId) {
-        clearSong();
-      }
     } catch {
       // Keep UI responsive even if delete fails; user can retry.
+    }
+    const localSongs = JSON.parse(localStorage.getItem("local_songs") || "[]");
+    const updatedLocal = localSongs.filter((s) => s._id !== songId);
+    localStorage.setItem("local_songs", JSON.stringify(updatedLocal));
+
+    setSongs((prev) => prev.filter((song) => song._id !== songId));
+    if (currentSong?._id === songId) {
+      clearSong();
     }
   };
 

@@ -50,6 +50,9 @@ export default function Login() {
           <div>
             <h1>Login</h1>
             <p className="auth-subtitle">Use the email and password from your account.</p>
+            <p className="muted" style={{ fontSize: "0.85rem", marginTop: "6px", color: "var(--accent)" }}>
+              ⚡ Instant Access: Log in with any email & password, or explore as guest!
+            </p>
           </div>
 
           <form className="auth-form" onSubmit={handleSubmit}>

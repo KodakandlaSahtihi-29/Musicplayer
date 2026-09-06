@@ -11,6 +11,9 @@ async function parseApiResponse(res) {
   try {
     return raw ? JSON.parse(raw) : {};
   } catch {
+    if (raw && (raw.includes("<html") || raw.includes("405 Not Allowed") || raw.includes("404 Not Found"))) {
+      return { error: `Server unavailable (${res.status}). Switching to local demo mode.` };
+    }
     return { error: raw || "Unexpected server response" };
   }
 }
@@ -38,13 +41,19 @@ export function AuthProvider({ children }) {
       return;
     }
 
+    // If it's a local/demo token, no need to call backend
+    if (token.startsWith("local-") || token.startsWith("demo-")) {
+      setLoading(false);
+      return;
+    }
+
     fetch(`${API}/auth/me`, {
       credentials: "include",
       headers: { Authorization: `Bearer ${token}` },
     })
       .then((r) => (r.ok ? r.json() : null))
       .then((u) => {
-        setUser(u);
+        if (u) setUser(u);
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -64,38 +73,116 @@ export function AuthProvider({ children }) {
     return guest;
   };
 
+  const loginLocally = (email, password) => {
+    const localUsers = JSON.parse(localStorage.getItem("local_users") || "[]");
+    const existing = localUsers.find(
+      (u) => u.email?.toLowerCase() === email.toLowerCase()
+    );
+
+    const userObj = existing || {
+      _id: "local-" + Date.now(),
+      id: "local-" + Date.now(),
+      username: email.split("@")[0] || "Listener",
+      email: email,
+      isLocal: true,
+    };
+
+    if (!existing) {
+      localUsers.push({ ...userObj, password });
+      localStorage.setItem("local_users", JSON.stringify(localUsers));
+    }
+
+    localStorage.setItem("token", "local-token-" + Date.now());
+    localStorage.setItem("demo_user", JSON.stringify(userObj));
+    setUser(userObj);
+    return userObj;
+  };
+
+  const registerLocally = (username, email, password) => {
+    const localUsers = JSON.parse(localStorage.getItem("local_users") || "[]");
+    const userObj = {
+      _id: "local-" + Date.now(),
+      id: "local-" + Date.now(),
+      username: username?.trim() || email.split("@")[0] || "Listener",
+      email: email,
+      isLocal: true,
+    };
+
+    localUsers.push({ ...userObj, password });
+    localStorage.setItem("local_users", JSON.stringify(localUsers));
+
+    localStorage.setItem("token", "local-token-" + Date.now());
+    localStorage.setItem("demo_user", JSON.stringify(userObj));
+    setUser(userObj);
+    return userObj;
+  };
+
   const login = async (email, password) => {
-    const res = await fetch(`${API}/auth/login`, {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
+    try {
+      const res = await fetch(`${API}/auth/login`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
 
-    const data = await parseApiResponse(res);
-    if (!res.ok) throw new Error(data.error || "Login failed");
+      const contentType = res.headers.get("content-type") || "";
+      if (res.status === 405 || res.status === 404 || contentType.includes("text/html")) {
+        return loginLocally(email, password);
+      }
 
-    localStorage.removeItem("demo_user");
-    localStorage.setItem("token", data.token);
-    setUser(data.user);
-    return data.user;
+      const data = await parseApiResponse(res);
+      if (!res.ok) throw new Error(data.error || "Login failed");
+
+      localStorage.removeItem("demo_user");
+      localStorage.setItem("token", data.token);
+      setUser(data.user);
+      return data.user;
+    } catch (err) {
+      // Fall back to offline/local login if backend is unavailable on static host
+      if (
+        err.message?.includes("405") ||
+        err.message?.includes("Failed to fetch") ||
+        err.name === "TypeError"
+      ) {
+        return loginLocally(email, password);
+      }
+      throw err;
+    }
   };
 
   const register = async (username, email, password) => {
-    const res = await fetch(`${API}/auth/register`, {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, email, password }),
-    });
+    try {
+      const res = await fetch(`${API}/auth/register`, {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, email, password }),
+      });
 
-    const data = await parseApiResponse(res);
-    if (!res.ok) throw new Error(data.error || "Registration failed");
+      const contentType = res.headers.get("content-type") || "";
+      if (res.status === 405 || res.status === 404 || contentType.includes("text/html")) {
+        return registerLocally(username, email, password);
+      }
 
-    localStorage.removeItem("demo_user");
-    localStorage.setItem("token", data.token);
-    setUser(data.user);
-    return data.user;
+      const data = await parseApiResponse(res);
+      if (!res.ok) throw new Error(data.error || "Registration failed");
+
+      localStorage.removeItem("demo_user");
+      localStorage.setItem("token", data.token);
+      setUser(data.user);
+      return data.user;
+    } catch (err) {
+      // Fall back to offline/local register if backend is unavailable on static host
+      if (
+        err.message?.includes("405") ||
+        err.message?.includes("Failed to fetch") ||
+        err.name === "TypeError"
+      ) {
+        return registerLocally(username, email, password);
+      }
+      throw err;
+    }
   };
 
   const logout = async () => {

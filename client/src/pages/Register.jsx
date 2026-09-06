@@ -51,6 +51,9 @@ export default function Register() {
           <div>
             <h1>Create Account</h1>
             <p className="auth-subtitle">Use a username, email, and a strong password.</p>
+            <p className="muted" style={{ fontSize: "0.85rem", marginTop: "6px", color: "var(--accent)" }}>
+              ⚡ Instant Access: Accounts are saved directly in your browser.
+            </p>
           </div>
 
           <form className="auth-form" onSubmit={handleSubmit}>

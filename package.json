@@ -5,7 +5,8 @@
     "build": "npm run build --prefix client",
     "client": "npm run dev --prefix client",
     "server": "node server/server.js",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "deploy": "npm run deploy --prefix client"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

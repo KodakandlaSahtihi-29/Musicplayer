@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Musify</title>
+    <script type="text/javascript">
+      // Redirect any 404s on GitHub Pages back to the root hash route
+      const segment = window.location.pathname.split("/").filter(Boolean);
+      const repo = segment.length > 0 ? "/" + segment[0] : "";
+      window.location.replace(window.location.origin + repo + "/#/");
+    </script>
+  </head>
+  <body style="font-family: sans-serif; text-align: center; padding: 40px; background: #0f172a; color: #fff;">
+    <h2>Redirecting to Musify...</h2>
+  </body>
+</html>

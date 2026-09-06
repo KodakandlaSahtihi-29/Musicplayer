@@ -142,18 +142,37 @@ musicplayerv2/
 
 ## Deployment
 
-### Frontend Deployment (Vercel)
-1. Push code to GitHub
-2. Import repo in [Vercel](https://vercel.com)
-3. Set build command: `npm run build` (from `/client`)
-4. Deploy
+### Frontend Hosting on GitHub Pages (Automated via GitHub Actions)
 
-### Backend Deployment (Render/Railway)
-1. Connect GitHub repo
-2. Set environment variables in dashboard
-3. Set start command: `npm run dev`
-4. Add MongoDB Atlas connection string
-5. Deploy
+The frontend is configured to automatically build and deploy to **GitHub Pages** using GitHub Actions:
+
+1. **Push your code to GitHub:**
+   ```bash
+   git push origin main
+   ```
+2. **Enable GitHub Pages in your repository settings:**
+   - Go to your repository on GitHub: `https://github.com/KodakandlaSahtihi-29/Musicplayer`
+   - Click on **Settings** (top navigation tab)
+   - In the left sidebar, click **Pages**
+   - Under **Build and deployment** → **Source**, select **GitHub Actions**
+3. **Your site is live!**
+   - GitHub Actions will automatically run `.github/workflows/deploy.yml` on every push to `main`
+   - Your live URL will be:
+     `https://kodakandlasahtihi-29.github.io/Musicplayer/`
+4. **Instant Demo Mode:**
+   - Anyone visiting your GitHub Pages site can click **"Explore as Guest (Demo Mode)"** to immediately listen to sample music tracks, test seeking, and control playback without needing a database connection!
+
+### Backend API Deployment (Optional / Production Full-Stack)
+
+Since GitHub Pages hosts static web applications, if you wish to host your live Express backend and MongoDB in the cloud:
+1. Connect this GitHub repo to a free Node.js host (such as **Render**, **Railway**, or **Fly.io**).
+2. Set the Root Directory to `server`.
+3. Configure environment variables in the host dashboard:
+   - `MONGO_URI` (from MongoDB Atlas)
+   - `JWT_SECRET`
+   - `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`
+4. Set `CLIENT_ORIGIN` to your GitHub Pages URL: `https://kodakandlasahtihi-29.github.io`
+5. In your frontend build or client `.env.production`, set `VITE_API_URL` to your backend's URL (e.g. `https://your-api.onrender.com/api`).
 
 ## Future Enhancements
 

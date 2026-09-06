@@ -10,10 +10,10 @@ const app = express();
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests from localhost, Vercel deployments, or configured client origin
+      // Allow requests from localhost, GitHub Pages deployments, or configured client origin
       if (
         !origin ||
-        origin.includes("vercel.app") ||
+        origin.includes("github.io") ||
         origin.includes("localhost") ||
         origin.includes("127.0.0.1") ||
         (process.env.CLIENT_ORIGIN && origin === process.env.CLIENT_ORIGIN)
@@ -66,7 +66,7 @@ async function connectDB() {
     }
 
     // 2. Try local MongoDB service with a short timeout (only for local development)
-    if (!process.env.VERCEL && uri) {
+    if (uri) {
       try {
         await mongoose.connect(uri, { serverSelectionTimeoutMS: 2500 });
         console.log("Connected to local MongoDB");
@@ -77,16 +77,14 @@ async function connectDB() {
     }
 
     // 3. Fallback to in-memory MongoDB so signup & app work seamlessly out-of-the-box locally
-    if (!process.env.VERCEL) {
-      try {
-        const { MongoMemoryServer } = require("mongodb-memory-server");
-        const mongod = await MongoMemoryServer.create();
-        const memoryUri = mongod.getUri();
-        await mongoose.connect(memoryUri);
-        console.log("MongoDB in-memory server connected ready for development");
-      } catch (err) {
-        console.error("Failed to start in-memory MongoDB:", err.message);
-      }
+    try {
+      const { MongoMemoryServer } = require("mongodb-memory-server");
+      const mongod = await MongoMemoryServer.create();
+      const memoryUri = mongod.getUri();
+      await mongoose.connect(memoryUri);
+      console.log("MongoDB in-memory server connected ready for development");
+    } catch (err) {
+      console.error("Failed to start in-memory MongoDB:", err.message);
     }
   })();
 

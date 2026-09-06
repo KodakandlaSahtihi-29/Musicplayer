@@ -5,7 +5,7 @@ import { useAuth } from "../context/AuthContext";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { user, login } = useAuth();
+  const { user, login, loginAsGuest } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -76,6 +76,20 @@ export default function Login() {
               </p>
             </div>
           </form>
+
+          <div style={{ marginTop: "1.25rem", paddingTop: "1rem", borderTop: "1px solid rgba(255, 255, 255, 0.12)" }}>
+            <button
+              type="button"
+              className="ghost-button"
+              style={{ width: "100%", justifyContent: "center", padding: "10px 16px" }}
+              onClick={() => {
+                loginAsGuest();
+                navigate("/");
+              }}
+            >
+              🎧 Explore as Guest (Demo Mode)
+            </button>
+          </div>
 
           {error && <p className="auth-error">{error}</p>}
         </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom";
+import { HashRouter, Navigate, Outlet, Route, Routes } from "react-router-dom";
 
 import Player from "./components/Player/Player";
 import Sidebar from "./components/Sidebar/Sidebar";
@@ -34,7 +34,7 @@ function AppLayout() {
 function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -53,7 +53,7 @@ function App() {
           </Route>
           <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </AuthProvider>
   );
 }

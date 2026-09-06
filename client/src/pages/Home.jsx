@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { usePlayer } from "../context/PlayerContext";
 import SongCard from "../components/SongCard/SongCard";
 import { API } from "../config/api";
+import { DEMO_SONGS } from "../data/demoSongs";
 
 function Home() {
   const { user } = useAuth();
@@ -16,9 +17,13 @@ function Home() {
       try {
         const res = await fetch(`${API}/songs`);
         const data = await res.json();
-        setSongs(Array.isArray(data) ? data : []);
+        if (Array.isArray(data) && data.length > 0) {
+          setSongs(data);
+        } else {
+          setSongs(DEMO_SONGS);
+        }
       } catch {
-        setSongs([]);
+        setSongs(DEMO_SONGS);
       } finally {
         setLoading(false);
       }

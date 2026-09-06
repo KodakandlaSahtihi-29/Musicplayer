@@ -1,5 +1,6 @@
 import { useState, useCallback, useRef } from "react";
 import { API } from "../config/api";
+import { DEMO_SONGS } from "../data/demoSongs";
 
 export function useSearch() {
   const [results, setResults] = useState({ songs: [], albums: [], artists: [] });
@@ -20,9 +21,18 @@ export function useSearch() {
       setLoading(true);
       try {
         const res = await fetch(`${API}/songs/search?q=${encodeURIComponent(q)}&type=${type}`);
-        setResults(await res.json());
+        const data = await res.json();
+        setResults(data);
       } catch (err) {
-        console.error(err);
+        // Fallback filter over demo tracks for offline / GitHub Pages demo mode
+        const lq = q.toLowerCase();
+        const matchedSongs = DEMO_SONGS.filter(
+          (s) =>
+            s.title.toLowerCase().includes(lq) ||
+            s.artist.toLowerCase().includes(lq) ||
+            (s.album && s.album.toLowerCase().includes(lq))
+        );
+        setResults({ songs: matchedSongs, albums: [], artists: [] });
       } finally {
         setLoading(false);
       }

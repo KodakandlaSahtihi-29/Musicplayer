@@ -10,8 +10,13 @@ export function usePlaylists() {
   };
 
   const fetchPlaylists = async () => {
-    const res = await fetch(`${API}/playlists/mine`, { headers });
-    setPlaylists(await res.json());
+    try {
+      const res = await fetch(`${API}/playlists/mine`, { headers });
+      const data = await res.json();
+      setPlaylists(Array.isArray(data) ? data : []);
+    } catch {
+      setPlaylists([]);
+    }
   };
 
   useEffect(() => {

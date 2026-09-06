@@ -21,6 +21,18 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const demoUser = localStorage.getItem("demo_user");
+
+    if (demoUser) {
+      try {
+        setUser(JSON.parse(demoUser));
+        setLoading(false);
+        return;
+      } catch {
+        localStorage.removeItem("demo_user");
+      }
+    }
+
     if (!token) {
       setLoading(false);
       return;
@@ -38,6 +50,20 @@ export function AuthProvider({ children }) {
       .catch(() => setLoading(false));
   }, []);
 
+  const loginAsGuest = () => {
+    const guest = {
+      _id: "guest-demo-user",
+      id: "guest-demo-user",
+      username: "Guest Listener",
+      email: "guest@musify.demo",
+      isDemo: true,
+    };
+    localStorage.setItem("token", "demo-guest-token");
+    localStorage.setItem("demo_user", JSON.stringify(guest));
+    setUser(guest);
+    return guest;
+  };
+
   const login = async (email, password) => {
     const res = await fetch(`${API}/auth/login`, {
       method: "POST",
@@ -49,6 +75,7 @@ export function AuthProvider({ children }) {
     const data = await parseApiResponse(res);
     if (!res.ok) throw new Error(data.error || "Login failed");
 
+    localStorage.removeItem("demo_user");
     localStorage.setItem("token", data.token);
     setUser(data.user);
     return data.user;
@@ -65,6 +92,7 @@ export function AuthProvider({ children }) {
     const data = await parseApiResponse(res);
     if (!res.ok) throw new Error(data.error || "Registration failed");
 
+    localStorage.removeItem("demo_user");
     localStorage.setItem("token", data.token);
     setUser(data.user);
     return data.user;
@@ -80,10 +108,11 @@ export function AuthProvider({ children }) {
       // Ignore network errors and clear local auth state anyway.
     }
     localStorage.removeItem("token");
+    localStorage.removeItem("demo_user");
     setUser(null);
   };
 
-  return <AuthCtx.Provider value={{ user, loading, login, register, logout }}>{children}</AuthCtx.Provider>;
+  return <AuthCtx.Provider value={{ user, loading, login, register, logout, loginAsGuest }}>{children}</AuthCtx.Provider>;
 }
 
 export const useAuth = () => {
